@@ -25,7 +25,7 @@ async function postToDiscordIfChanged() {
 function createMessage(leaderboardJSON: string) {
     const leaderboard = JSON.parse(leaderboardJSON);
     const membersObj = leaderboard.members;
-    let members = Object.getOwnPropertyNames(membersObj).map(key => membersObj[key]);
+    let members = membersObj && Object.getOwnPropertyNames(membersObj)?.map(key => membersObj[key]) || [];
     members.sort((m1, m2) => m2.local_score - m1.local_score);
     return members.map(member => `${member.name}: [${member.stars}] stars, [${member.local_score}] points`);
 }
