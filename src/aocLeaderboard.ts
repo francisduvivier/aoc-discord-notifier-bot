@@ -19,8 +19,10 @@ export function getLastLeaderBoard() {
 
 async function fetchLeaderBoard(): Promise<string> {
     if (DEBUG) {
+        console.log(`Reading from file ./data/newleaderboard.json instead of fetching from [${getBoardUrl()}]`)
         return readFileSync('./data/newleaderboard.json', { encoding: 'utf8' });
     }
+    console.log(`Requesting leaderboard from [${getBoardUrl()}]`)
     const requestInit = {
         headers: {
             'Cookie': config.aocCookie
