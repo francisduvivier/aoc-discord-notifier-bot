@@ -1,4 +1,4 @@
-import { getBoardUrl, getLastLeaderBoard, getNewLeaderBoard } from "./aocLeaderBoardPoller";
+import { getBoardUrl, getLastLeaderBoard, getNewLeaderBoard } from "./aocLeaderboard";
 import { sendMessage } from "./discordNotifier";
 
 runBot();
@@ -21,7 +21,7 @@ async function postToDiscordIfChanged() {
         console.log('No change detected: ', createMessage(newLeaderboardJSON), getBoardUrl())
     }
 }
-55
+
 function createMessage(leaderboardJSON: string) {
     const leaderboard = JSON.parse(leaderboardJSON);
     const membersObj = leaderboard.members;
