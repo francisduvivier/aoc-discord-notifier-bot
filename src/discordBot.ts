@@ -15,18 +15,25 @@ async function postToDiscordIfChanged() {
     const newLeaderboardJSON = await getNewLeaderBoard();
     if (leaderBoardChanged(oldLeaderBoardJSON, newLeaderboardJSON)) {
         const description = createMessage(newLeaderboardJSON);
-        sendMessage('Leaderboard Changed!', description, getBoardUrl());
+        console.log('Old leaderboard!', createMessage(oldLeaderBoardJSON), getBoardUrl());
+        await sendMessage('Leaderboard Changed!', description, getBoardUrl());
+    } else {
+        console.log('No change detected: ', createMessage(newLeaderboardJSON), getBoardUrl())
     }
 }
-
+55
 function createMessage(leaderboardJSON: string) {
     const leaderboard = JSON.parse(leaderboardJSON);
     const membersObj = leaderboard.members;
-    return Object.getOwnPropertyNames(membersObj).map(key => membersObj[key].name + ': ' + membersObj[key].local_score);
+    let members = Object.getOwnPropertyNames(membersObj).map(key => membersObj[key]);
+    members.sort((m1, m2) => m2.local_score - m1.local_score);
+    return members.map(member => `${member.name}: [${member.stars}] stars, [${member.local_score}] points`);
 }
 
 function leaderBoardChanged(oldLeaderBoardJSON: any, newLeaderboardJSON: string) {
-    return JSON.stringify(JSON.parse(oldLeaderBoardJSON)) !== JSON.stringify(JSON.parse(newLeaderboardJSON));
+    const msgNew = createMessage(oldLeaderBoardJSON).join('\n');
+    const msgOld = createMessage(newLeaderboardJSON).join('\n');
+    return msgNew != msgOld;
 }
 
 
