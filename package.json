@@ -5,7 +5,7 @@
   "main": "src/discordBot.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/discordbot.ts"
+    "start": "ts-node src/discordBot.ts"
   },
   "author": "",
   "license": "ISC",
