@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import fetch from "node-fetch";
-import * as config from "../config.json";
+import { config } from "./configHelper";
+
 const DEBUG = false;
 
 export function getBoardUrl() {

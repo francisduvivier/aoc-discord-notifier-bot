@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import * as config from "../config.json";
+import { config } from "./configHelper";
 
 const webhookClient = new Discord.WebhookClient(config.webhookID, config.webhookToken);
 
