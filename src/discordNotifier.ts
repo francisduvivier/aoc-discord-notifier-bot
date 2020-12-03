@@ -1,6 +1,5 @@
 import Discord from 'discord.js';
-import { readFileSync } from 'fs';
-const config = JSON.parse(readFileSync('./config.json', { encoding: 'utf8' }));
+import * as config from "../config.json";
 
 const webhookClient = new Discord.WebhookClient(config.webhookID, config.webhookToken);
 
