@@ -1,6 +1,6 @@
 {
-    "webhookID": "your bot's webhook id, https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks (second last path part of webhook url)",
-    "webhookToken": "your bots webhook token, https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks (last path part of webhook url)",
-    "aocCookie": "session=your_session_id (get this from cookie for private leaderboard request when logged in, should stay valid for a month)",
-    "leaderboardUrl": "eg https://adventofcode.com/2020/leaderboard/private/view/your_id"
+  "webhookID": "your bot's webhook id, https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks (second last path part of webhook url)",
+  "webhookToken": "your bots webhook token, https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks (last path part of webhook url)",
+  "aocCookie": "session=your_session_id (get this from cookie for private leaderboard request when logged in, should stay valid for a month)",
+  "leaderboardUrl": "eg https://adventofcode.com/2020/leaderboard/private/view/your_id"
 }

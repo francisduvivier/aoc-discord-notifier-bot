@@ -8,6 +8,7 @@ export function getBoardUrl() {
     const link = config.leaderboardUrl;
     return link;
 }
+
 export function getLastLeaderBoard() {
     try {
         return readFileSync('./data/aocleaderboard.json', { encoding: 'utf8' })
@@ -15,6 +16,7 @@ export function getLastLeaderBoard() {
         return '{}';
     }
 }
+
 async function fetchLeaderBoard(): Promise<string> {
     if (DEBUG) {
         return readFileSync('./data/newleaderboard.json', { encoding: 'utf8' });
@@ -28,6 +30,7 @@ async function fetchLeaderBoard(): Promise<string> {
     const responseText = await (response).text();
     return responseText;
 }
+
 export async function getNewLeaderBoard() {
     const newLeaderBoardJson = await fetchLeaderBoard();
     if (newLeaderBoardJson.startsWith('{') && JSON.parse(newLeaderBoardJson).members) {

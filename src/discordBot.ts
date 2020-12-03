@@ -4,11 +4,13 @@ import { sendMessage } from "./discordNotifier";
 runBot();
 
 const POLLING_INTERVAL = 15 * 60 * 1000;
+
 async function runBot() {
     console.log('Bot Started!')
     await postToDiscordIfChanged();
     setInterval(() => postToDiscordIfChanged(), POLLING_INTERVAL);
 }
+
 async function postToDiscordIfChanged() {
     console.log('Checking leaderboard now');
     const oldLeaderBoardJSON = getLastLeaderBoard();
@@ -35,5 +37,3 @@ function leaderBoardChanged(oldLeaderBoardJSON: any, newLeaderboardJSON: string)
     const msgOld = createMessage(newLeaderboardJSON).join('\n');
     return msgNew != msgOld;
 }
-
-

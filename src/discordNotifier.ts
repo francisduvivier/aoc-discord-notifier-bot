@@ -13,4 +13,3 @@ export async function sendMessage(title, message, link) {
         embeds: [embedLink, embedMsg],
     });
 }
-
