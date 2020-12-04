@@ -19,7 +19,7 @@ function getLastLeaderBoard() {
 
 async function fetchLeaderBoard() {
     if (DUMMY_BOARD) {
-        console.log(`Reading from file ./data/newleaderboard.json instead of fetching from [${ getBoardUrl() }]`)
+        console.log(`Reading from file [./data/newleaderboard.json] instead of fetching from [${ getBoardUrl() }]`)
         return readFileSync('./data/newleaderboard.json', { encoding: 'utf8' });
     }
     console.log(`Requesting leaderboard from [${ getBoardUrl() }]`)
