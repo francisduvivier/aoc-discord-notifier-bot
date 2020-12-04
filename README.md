@@ -4,6 +4,8 @@ This is a simple Discord bot written in Javascript for Node.js that posts to a D
 score on a private leaderboard have changed.
 
 No fancy integrations, just using Discord client for posting the messages.
+# Prerequisites
+- Node v10+
 
 # How to use
 - run `npm install`
