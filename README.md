@@ -20,3 +20,7 @@ No fancy integrations, just using Discord client for posting the messages.
 - More change processing to highlight what's changed
 - Nicer logs
 - Maybe better run control
+
+# License
+
+You can do whatever with this code, but don't sue me.
