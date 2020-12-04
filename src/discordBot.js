@@ -1,5 +1,5 @@
-import { getBoardUrl, getLastLeaderBoard, getNewLeaderBoard } from "./aocLeaderboard";
-import { sendMessage } from "./discordNotifier";
+const { getBoardUrl, getLastLeaderBoard, getNewLeaderBoard } = require('./aocLeaderboard');
+const { sendMessage } = require('./discordNotifier');
 
 runBot();
 
@@ -24,16 +24,18 @@ async function postToDiscordIfChanged() {
     }
 }
 
-function createMessage(leaderboardJSON: string) {
+function createMessage(leaderboardJSON) {
     const leaderboard = JSON.parse(leaderboardJSON);
     const membersObj = leaderboard.members;
-    let members = membersObj && Object.getOwnPropertyNames(membersObj)?.map(key => membersObj[key]) || [];
+    let members = membersObj && Object.getOwnPropertyNames(membersObj).map(key => membersObj[key]) || [];
     members.sort((m1, m2) => m2.local_score - m1.local_score);
-    return members.map(member => `${member.name}: [${member.stars}] stars, [${member.local_score}] points`);
+    return members.map(member => `${ member.name }: [${ member.stars }] stars, [${ member.local_score }] points`);
 }
 
-function leaderBoardChanged(oldLeaderBoardJSON: any, newLeaderboardJSON: string) {
+function leaderBoardChanged(oldLeaderBoardJSON, newLeaderboardJSON) {
     const msgNew = createMessage(oldLeaderBoardJSON).join('\n');
     const msgOld = createMessage(newLeaderboardJSON).join('\n');
-    return msgNew != msgOld;
+    return msgNew !== msgOld;
 }
+
+module.exports = { runBot };
