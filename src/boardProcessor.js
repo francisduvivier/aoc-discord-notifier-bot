@@ -1,8 +1,8 @@
 const relevantProps = [
-    { prefix: '[', key: 'position', postfix: '] ' },
-    { prefix: '', key: 'name', postfix: ': ' },
-    { prefix: '[', key: 'local_score', postfix: ']p, ' },
-    { prefix: '[', key: 'stars', postfix: ']*' },
+    { prefix: '', key: 'position', postfix: ' | ' },
+    { prefix: '', key: 'name', postfix: ' | ' },
+    { prefix: '', key: 'local_score', postfix: 'p | ' },
+    { prefix: '', key: 'stars', postfix: '*' },
 ]
 
 function createMemberlineElements(member, oldMember) {
@@ -12,7 +12,7 @@ function createMemberlineElements(member, oldMember) {
         const oldVal = oldMember[key];
         const newVal = member[key];
         const changed = oldVal !== newVal;
-        let text = String(newVal).substr(0, 10);
+        let text = String(newVal).substr(0, 20);
         if (changed) {
             anyChange = true;
         }
