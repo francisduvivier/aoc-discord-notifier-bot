@@ -2,10 +2,10 @@
   "name": "oac-discord-notifier",
   "version": "0.2.0",
   "description": "Advent of Code 2020 Private Leaderboard Change Notifier for Discord",
-  "main": "src/bot.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/bot.js"
+    "start": "node src/index.js"
   },
   "author": "Francis Duvivier",
   "license": "MIT",

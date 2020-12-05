@@ -5,9 +5,8 @@ const { config } = require('./configHelper');
 const DUMMY_BOARD = process.env.DUMMY_BOARD === 'true';
 const KEEP_ALL_LEADERBOARDS = process.env.KEEP_ALL_LEADERBOARDS === 'true';
 
-function getBoardUrl() {
-    return config.leaderboardUrl;
-}
+const boardUrl = config.leaderboardUrl;
+const jsonBoardUrl = boardUrl + '.json';
 
 function getLastLeaderBoard() {
     try {
@@ -19,16 +18,17 @@ function getLastLeaderBoard() {
 
 async function fetchLeaderBoard() {
     if (DUMMY_BOARD) {
-        console.log(`Reading from file [./data/newleaderboard.json] instead of fetching from [${ getBoardUrl() }]`)
+        console.log(`Reading from file [./data/newleaderboard.json] instead of fetching from [${ boardUrl }.json]`)
         return readFileSync('./data/newleaderboard.json', { encoding: 'utf8' });
     }
-    console.log(`Requesting leaderboard from [${ getBoardUrl() }]`)
+    console.log(`Requesting leaderboard from [${ boardUrl }]`)
     const requestInit = {
         headers: {
             'Cookie': config.aocCookie
         }
     };
-    const response = await fetch(getBoardUrl() + '.json', requestInit);
+
+    const response = await fetch(jsonBoardUrl, requestInit);
     const responseText = await (response).text();
     return responseText;
 }
@@ -47,7 +47,8 @@ async function getNewLeaderBoard() {
 }
 
 module.exports = {
-    getBoardUrl,
+    boardUrl,
+    jsonBoardUrl,
     getLastLeaderBoard,
     getNewLeaderBoard,
 }
