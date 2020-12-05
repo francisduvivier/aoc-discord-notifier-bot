@@ -1,10 +1,34 @@
+function getChangedStarTimes(member, oldMember) {
+    const changedStars = [];
+    for (const dayIndex in member.completion_day_level) {
+        if (!member.completion_day_level.hasOwnProperty(dayIndex)) continue;
+        const dayObj = member.completion_day_level[dayIndex];
+        for (const level in dayObj) {
+            if (!dayObj.hasOwnProperty(level)) continue;
+            if (!oldMember || !oldMember[dayIndex] || !oldMember[dayIndex][level]) {
+                changedStars.push(dayObj[level].get_star_ts)
+            }
+        }
+    }
+    const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
+    return `${ changedStars.map(ts => hourMinutes(new Date(ts * 1000))) }`;
+}
+
 const relevantProps = [
-    { prefix: '', key: 'position', postfix: ' | ' },
-    { prefix: '', key: 'name', postfix: ' | ' },
-    { prefix: '', key: 'local_score', postfix: 'p | ' },
-    { prefix: '', key: 'stars', postfix: '*' },
+    { prefix: '', key: 'position', postfix: '|' },
+    { prefix: '', key: 'name', postfix: '|' },
+    { prefix: '', key: 'local_score', postfix: 'p|' },
+    { prefix: '', key: 'stars', postfix: '*|' },
 ]
 
+/**
+ * A member object
+ * @typedef {{"stars": number, "name": string, "local_score": number, "completion_day_level": [([{get_star_ts: string}])]}} Member
+ */
+/**
+ * @param {Member} member
+ * @param {Member|{}} oldMember
+ */
 function createMemberlineElements(member, oldMember) {
     let anyChange = false;
     const lineElements = relevantProps.map(relavantProp => {
@@ -12,7 +36,7 @@ function createMemberlineElements(member, oldMember) {
         const oldVal = oldMember[key];
         const newVal = member[key];
         const changed = oldVal !== newVal;
-        let text = String(newVal).substr(0, 20);
+        let text = String(newVal).substr(0, 15);
         if (changed) {
             anyChange = true;
         }
@@ -21,6 +45,7 @@ function createMemberlineElements(member, oldMember) {
         }
         return `${ relavantProp.prefix || '' }${ text }${ relavantProp.postfix || '' }`;
     });
+    lineElements.push(getChangedStarTimes(member, oldMember));
     return { anyChange, lineElements };
 }
 
