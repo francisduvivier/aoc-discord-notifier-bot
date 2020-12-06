@@ -5,7 +5,7 @@ function getChangedStarTimes(member, oldMember) {
         const dayObj = member.completion_day_level[dayIndex];
         for (const level in dayObj) {
             if (!dayObj.hasOwnProperty(level)) continue;
-            if (!oldMember || !oldMember[dayIndex] || !oldMember[dayIndex][level]) {
+            if (!oldMember || !oldMember.completion_day_level || !oldMember.completion_day_level[dayIndex] || !oldMember.completion_day_level[dayIndex][level]) {
                 changedStars.push(dayObj[level].get_star_ts)
             }
         }
