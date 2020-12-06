@@ -36,10 +36,12 @@ async function fetchLeaderBoard() {
 async function getNewLeaderBoard() {
     const newLeaderBoardJson = await fetchLeaderBoard();
     if (newLeaderBoardJson.startsWith('{') && JSON.parse(newLeaderBoardJson).members) {
-        if (KEEP_ALL_LEADERBOARDS) {
+        if (KEEP_ALL_LEADERBOARDS && !DUMMY_BOARD) {
             writeFileSync(`./data/old/aocleaderboard-${ Date.now() }.json`, getLastLeaderBoard());
         }
+        if(!DUMMY_BOARD){
         writeFileSync('./data/aocleaderboard.json', newLeaderBoardJson);
+        }
     } else {
         throw Error('Bad leaderboard response:' + newLeaderBoardJson);
     }
