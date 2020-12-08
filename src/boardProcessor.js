@@ -1,15 +1,16 @@
 function getChangedStarTimes(member, oldMember) {
     const changedStars = [];
-    for (const dayIndex in member.completion_day_level) {
-        if (!member.completion_day_level.hasOwnProperty(dayIndex)) continue;
+    const dayIds = Object.getOwnPropertyNames(member.completion_day_level);
+    for (const dayIndex of dayIds) {
         const dayObj = member.completion_day_level[dayIndex];
-        for (const level in dayObj) {
-            if (!dayObj.hasOwnProperty(level)) continue;
-            if (!oldMember || !oldMember.completion_day_level || !oldMember.completion_day_level[dayIndex] || !oldMember.completion_day_level[dayIndex][level]) {
-                changedStars.push(dayObj[level].get_star_ts)
+        const levelIds = Object.getOwnPropertyNames(dayObj);
+        for (const levelId of levelIds) {
+            if (!oldMember || !oldMember.completion_day_level || !oldMember.completion_day_level[dayIndex] || !oldMember.completion_day_level[dayIndex][levelId]) {
+                changedStars.push(dayObj[levelId].get_star_ts)
             }
         }
     }
+    changedStars.sort((a, b) => a - b)
     const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
     return `${ changedStars.map(ts => hourMinutes(new Date(ts * 1000))) }`;
 }
