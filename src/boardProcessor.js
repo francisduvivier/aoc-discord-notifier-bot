@@ -1,4 +1,4 @@
-function getChangedStarTimes(member, oldMember) {
+function getNewStarTimes(member, oldMember) {
     const changedStars = [];
     const dayIds = Object.getOwnPropertyNames(member.completion_day_level);
     for (const dayIndex of dayIds) {
@@ -11,6 +11,11 @@ function getChangedStarTimes(member, oldMember) {
         }
     }
     changedStars.sort((a, b) => a - b)
+    return changedStars;
+}
+
+function getNewStarTimesString(member, oldMember) {
+    const changedStars = getNewStarTimes(member, oldMember);
     const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
     return `${ changedStars.map(ts => hourMinutes(new Date(ts * 1000))) }`;
 }
@@ -46,17 +51,17 @@ function createMemberlineElements(member, oldMember) {
         }
         return `${ relavantProp.prefix || '' }${ text }${ relavantProp.postfix || '' }`;
     });
-    lineElements.push(getChangedStarTimes(member, oldMember));
+    lineElements.push(getNewStarTimesString(member, oldMember));
     return { anyChange, lineElements };
 }
 
 function extractSortedMembers(leaderboardJson) {
     const leaderboard = JSON.parse(leaderboardJson);
-    const membersObj = leaderboard.members;
-    let members = membersObj && Object.getOwnPropertyNames(membersObj).map(key => membersObj[key]) || [];
+    const membersObj = leaderboard.members || {};
+    let members = Object.getOwnPropertyNames(membersObj).map(key => membersObj[key]) || [];
     members.sort((m1, m2) => m2.local_score - m1.local_score);
     members.forEach((member, index) => member['position'] = index + 1);
-    return members;
+    return { map: membersObj, list: members };
 }
 
 function createTableLikeString(hangedLineElementsList) {
@@ -70,15 +75,37 @@ function createTableLikeString(hangedLineElementsList) {
 }
 
 function createMemberLines(leaderboardJson, oldLeaderboardJson) {
-    const newMembers = extractSortedMembers(leaderboardJson);
-    const oldMembers = extractSortedMembers(oldLeaderboardJson);
+    const { list: newMembers } = extractSortedMembers(leaderboardJson);
+    const { map: oldMemberMap } = extractSortedMembers(oldLeaderboardJson);
     const changedLineElementsList = newMembers.map(member => {
-        const oldMember = oldMembers.find(m => m.id === member.id) || {};
+        const oldMember = oldMemberMap[member.id] || {};
         return createMemberlineElements(member, oldMember)
     }).filter(lineInfo => lineInfo.anyChange).map(lineInfo => lineInfo.lineElements);
     return changedLineElementsList.length && createTableLikeString(changedLineElementsList);
 }
 
+function createMemberSummary(newMember, oldMember) {
+    const addedStars = getNewStarTimes(newMember, oldMember)
+    const shortName = newMember.name.split(' ')[0].substr(0, 10);
+    if (!(oldMember.position <= newMember.position)) {
+        return `**${ shortName }** rose to position **${ newMember.position }**`
+    } else if (addedStars.length) {
+        return `**${ shortName }** gained **${ addedStars.length }** *`
+    }
+    return '';
+}
+
+function createSummary(leaderboardJson, oldLeaderboardJson) {
+    const { list: newMembers } = extractSortedMembers(leaderboardJson);
+    const { map: oldMemberMap } = extractSortedMembers(oldLeaderboardJson);
+    const improvedMembers = newMembers.map(member => {
+        const oldMember = oldMemberMap[member.id] || {};
+        return createMemberSummary(member, oldMember)
+    })
+    return improvedMembers.filter(summary => summary).join(', ');
+}
+
 module.exports = {
-    createMemberLines
+    createMemberLines,
+    createSummary
 }
