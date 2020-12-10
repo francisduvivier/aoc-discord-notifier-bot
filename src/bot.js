@@ -1,3 +1,4 @@
+const { createSummary } = require("./boardProcessor");
 const { createMemberLines } = require("./boardProcessor");
 const { boardUrl, getLastLeaderBoard, getNewLeaderBoard } = require('./aocFetch');
 const { sendMessage } = require('./discordNotifier');
@@ -18,7 +19,8 @@ async function postToDiscordIfChanged() {
     const newLeaderboardJson = await getNewLeaderBoard();
     const message = createMemberLines(newLeaderboardJson, oldLeaderBoardJson);
     if (message.length) {
-        await sendMessage(`[Leaderboard](${ boardUrl }) Changed!`, message);
+        const summary = createSummary(newLeaderboardJson, oldLeaderBoardJson);
+        await sendMessage(summary, message, `Full [Leaderboard](${ boardUrl })`);
     } else {
         console.log(`No change detected.`)
     }
