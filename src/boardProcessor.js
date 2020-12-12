@@ -26,10 +26,10 @@ function getNewStarTimesString(member, oldMember) {
 }
 
 const relevantProps = [
-    { prefix: '', key: 'position', postfix: '|' },
+    { prefix: '', key: 'position', postfix: '|', lowIsUp: true },
     { prefix: '', key: 'name', postfix: '|' },
     { prefix: '', key: 'local_score', postfix: 'p|' },
-    { prefix: '', key: 'stars', postfix: '*|' },
+    { prefix: '', key: 'stars', postfix: '★|' },
 ]
 
 /**
@@ -42,8 +42,8 @@ const relevantProps = [
  */
 function createMemberlineElements(member, oldMember) {
     let anyChange = false;
-    const lineElements = relevantProps.map(relavantProp => {
-        const key = relavantProp.key;
+    const lineElements = relevantProps.map(relevantProp => {
+        const key = relevantProp.key;
         const oldVal = oldMember[key];
         const newVal = member[key];
         const changed = oldVal !== newVal;
@@ -52,9 +52,11 @@ function createMemberlineElements(member, oldMember) {
             anyChange = true;
         }
         if (changed && oldVal !== undefined) {
-            text = `${ oldVal }->${ newVal }`;
+            const up = key === 'position' ? '↓' : '↑';
+            const down = key === 'position' ? '↑' : '↓';
+            text = `${ newVal > oldVal ? up : oldVal > newVal ? down : '' }${ newVal }`;
         }
-        return `${ relavantProp.prefix || '' }${ text }${ relavantProp.postfix || '' }`;
+        return `${ relevantProp.prefix || '' }${ text }${ relevantProp.postfix || '' }`;
     });
     lineElements.push(getNewStarTimesString(member, oldMember));
     return { anyChange, lineElements };
@@ -100,7 +102,7 @@ function createMemberSummary(newMember, oldMember) {
     if (!(oldMember.position <= newMember.position)) {
         return `**${ shortName }** rose to position **${ newMember.position }**`
     } else if (addedStars.length) {
-        return `**${ shortName }** gained **${ addedStars.length }** *`
+        return `**${ shortName }** gained **${ addedStars.length }** ★`
     }
     return '';
 }
