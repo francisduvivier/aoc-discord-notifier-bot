@@ -1,4 +1,4 @@
-const MAX_MEMBERS_IN_MESSAGE = 50;
+const MAX_MEMBERS_IN_MESSAGE = 40;
 
 function getNewStarTimes(member, oldMember) {
     const changedStars = [];
