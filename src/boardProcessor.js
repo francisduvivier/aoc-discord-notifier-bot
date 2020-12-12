@@ -100,9 +100,9 @@ function createMemberSummary(newMember, oldMember) {
     const splitName = ('' + newMember.name || 'Mister Nameless').split(' ');
     const shortName = splitName[0].substr(0, 10) + (splitName[1] && (' ' + splitName[1][0]) || '');
     if (!(oldMember.position <= newMember.position)) {
-        return `**${ shortName }** rose to position **${ newMember.position }**`
+        return `**${ shortName }**: ↑**${ newMember.position }**`
     } else if (addedStars.length) {
-        return `**${ shortName }** gained **${ addedStars.length }** ★`
+        return `**${ shortName }**: +**${ addedStars.length }**★`
     }
     return '';
 }
