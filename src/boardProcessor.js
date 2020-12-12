@@ -1,3 +1,5 @@
+const MAX_MEMBERS_IN_MESSAGE = 50;
+
 function getNewStarTimes(member, oldMember) {
     const changedStars = [];
     const dayIds = Object.getOwnPropertyNames(member.completion_day_level);
@@ -67,14 +69,18 @@ function extractSortedMembers(leaderboardJson) {
     return { map: membersObj, list: members };
 }
 
-function createTableLikeString(hangedLineElementsList) {
-    return hangedLineElementsList.map((lineElems) => {
+function createTableLikeString(changedLineElementsList) {
+    let tableLikeString = changedLineElementsList.slice(0, MAX_MEMBERS_IN_MESSAGE).map((lineElems) => {
         return lineElems.map((elem, i) => {
-            const others = hangedLineElementsList.map(lineElems => lineElems[i]);
+            const others = changedLineElementsList.map(lineElems => lineElems[i]);
             const maxLen = Math.max(...others.map(el => el.length));
             return elem.padStart(maxLen)
         }).join('');
     }).join('\n');
+    if (changedLineElementsList.length > MAX_MEMBERS_IN_MESSAGE) {
+        tableLikeString += `\nAnd ${ changedLineElementsList.length - MAX_MEMBERS_IN_MESSAGE } more changes!`
+    }
+    return tableLikeString;
 }
 
 function createMemberLines(leaderboardJson, oldLeaderboardJson) {
