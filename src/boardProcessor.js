@@ -102,11 +102,17 @@ function createMemberSummary(newMember, oldMember) {
 function createSummary(leaderboardJson, oldLeaderboardJson) {
     const { list: newMembers } = extractSortedMembers(leaderboardJson);
     const { map: oldMemberMap } = extractSortedMembers(oldLeaderboardJson);
-    const improvedMembers = newMembers.map(member => {
+    const memberSummaries = newMembers.map(member => {
         const oldMember = oldMemberMap[member.id] || {};
         return createMemberSummary(member, oldMember)
     })
-    return improvedMembers.filter(summary => summary).join(', ');
+    const improvedMembers = memberSummaries.filter(summary => summary);
+    if (improvedMembers.length > 3) {
+        const removedMembers = improvedMembers.splice(3);
+        return `${ improvedMembers.join(', ') } and ${ removedMembers.length } more updates`
+    } else {
+        return improvedMembers.join(', ')
+    }
 }
 
 module.exports = {
