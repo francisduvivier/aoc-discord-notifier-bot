@@ -1,25 +1,31 @@
 const MAX_MEMBERS_IN_MESSAGE = 40;
 
 function getNewStarTimes(member, oldMember) {
-    const changedStars = [];
+    const newMemberStarTimes = getAllStarTimes(member);
+    const oldMemberStarTimes = getAllStarTimes(oldMember);
+    const newStarTimes = newMemberStarTimes.filter(starTime => oldMemberStarTimes.indexOf(starTime) === -1)
+    newStarTimes.sort((a, b) => a - b)
+    return newStarTimes;
+}
+
+function getAllStarTimes(member) {
     const dayIds = Object.getOwnPropertyNames(member.completion_day_level);
+    const stars = [];
     for (const dayIndex of dayIds) {
         const dayObj = member.completion_day_level[dayIndex];
         const levelIds = Object.getOwnPropertyNames(dayObj);
         for (const levelId of levelIds) {
-            if (!oldMember || !oldMember.completion_day_level || !oldMember.completion_day_level[dayIndex] || !oldMember.completion_day_level[dayIndex][levelId]) {
-                changedStars.push(dayObj[levelId].get_star_ts)
-            }
+            stars.push(dayObj[levelId].get_star_ts);
         }
     }
-    changedStars.sort((a, b) => a - b)
-    return changedStars;
+    return stars;
 }
 
-function getNewStarTimesString(member, oldMember) {
-    const changedStars = getNewStarTimes(member, oldMember);
-    if (changedStars.length > 2) {
-        changedStars.splice(0, changedStars.length - 2)
+function getStarTimesString(member) {
+    const changedStars = getAllStarTimes(member);
+    const MAX_STAR_TIMES_SHOWN = 2;
+    if (changedStars.length > MAX_STAR_TIMES_SHOWN) {
+        changedStars.splice(0, changedStars.length - MAX_STAR_TIMES_SHOWN)
     }
     const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
     return `${ changedStars.map(ts => hourMinutes(new Date(ts * 1000))) }`;
@@ -47,7 +53,7 @@ function createMemberlineElements(member, oldMember) {
         const oldVal = oldMember[key];
         const newVal = member[key];
         const changed = oldVal !== newVal;
-        let text = String(newVal).substr(0, 15);
+        let text = String(newVal).substr(0, 12);
         if (changed) {
             anyChange = true;
         }
@@ -58,7 +64,7 @@ function createMemberlineElements(member, oldMember) {
         }
         return `${ relevantProp.prefix || '' }${ text }${ relevantProp.postfix || '' }`;
     });
-    lineElements.push(getNewStarTimesString(member, oldMember));
+    lineElements.push(getStarTimesString(member, oldMember));
     return { anyChange, lineElements };
 }
 
