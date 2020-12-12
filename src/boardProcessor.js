@@ -1,62 +1,78 @@
 const MAX_MEMBERS_IN_MESSAGE = 40;
+const NAME_IN_MESSAGE_CUTOFF = 12;
+const FIRST_NAME_IN_SUMMARY_CUTOFF = 10;
+const REST_NAME_IN_SUMMARY_CUTOFF = 1;
+const MAX_STAR_TIMES_SHOWN = 2;
+const SHOW_ONLY_CHANGED_STAR_TIMES = false;
+const SHOW_OLD_COMPARISON_VALUES = false;
 
 function getNewStarTimes(member, oldMember) {
-    const changedStars = [];
+    const newMemberStarTimes = getAllStarTimes(member);
+    const oldMemberStarTimes = getAllStarTimes(oldMember);
+    const newStarTimes = newMemberStarTimes.filter(starTime => oldMemberStarTimes.indexOf(starTime) === -1)
+    newStarTimes.sort((a, b) => a - b)
+    return newStarTimes;
+}
+
+function getAllStarTimes(member) {
     const dayIds = Object.getOwnPropertyNames(member.completion_day_level);
+    const stars = [];
     for (const dayIndex of dayIds) {
         const dayObj = member.completion_day_level[dayIndex];
         const levelIds = Object.getOwnPropertyNames(dayObj);
         for (const levelId of levelIds) {
-            if (!oldMember || !oldMember.completion_day_level || !oldMember.completion_day_level[dayIndex] || !oldMember.completion_day_level[dayIndex][levelId]) {
-                changedStars.push(dayObj[levelId].get_star_ts)
-            }
+            stars.push(dayObj[levelId].get_star_ts);
         }
     }
-    changedStars.sort((a, b) => a - b)
-    return changedStars;
+    return stars;
 }
 
-function getNewStarTimesString(member, oldMember) {
-    const changedStars = getNewStarTimes(member, oldMember);
-    if (changedStars.length > 2) {
-        changedStars.splice(0, changedStars.length - 2)
+function getStarTimesString(member, oldMember) {
+    const starTimes = SHOW_ONLY_CHANGED_STAR_TIMES ? getNewStarTimes(member, oldMember) : getAllStarTimes(member);
+    if (starTimes.length > MAX_STAR_TIMES_SHOWN) {
+        starTimes.splice(0, starTimes.length - MAX_STAR_TIMES_SHOWN)
     }
     const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
-    return `${ changedStars.map(ts => hourMinutes(new Date(ts * 1000))) }`;
+    return `${ starTimes.map(ts => hourMinutes(new Date(ts * 1000))) }`;
 }
 
 const relevantProps = [
-    { prefix: '', key: 'position', postfix: '|' },
+    { prefix: '', key: 'position', postfix: '|', lowIsUp: true },
     { prefix: '', key: 'name', postfix: '|' },
     { prefix: '', key: 'local_score', postfix: 'p|' },
-    { prefix: '', key: 'stars', postfix: '*|' },
+    { prefix: '', key: 'stars', postfix: '★|' },
 ]
 
 /**
  * A member object
  * @typedef {{"stars": number, "name": string, "local_score": number, "completion_day_level": [([{get_star_ts: string}])]}} Member
  */
+
 /**
  * @param {Member} member
  * @param {Member|{}} oldMember
  */
 function createMemberlineElements(member, oldMember) {
     let anyChange = false;
-    const lineElements = relevantProps.map(relavantProp => {
-        const key = relavantProp.key;
+    const lineElements = relevantProps.map(relevantProp => {
+        const key = relevantProp.key;
         const oldVal = oldMember[key];
         const newVal = member[key];
         const changed = oldVal !== newVal;
-        let text = String(newVal).substr(0, 15);
+        let text = String(newVal).substr(0, NAME_IN_MESSAGE_CUTOFF);
         if (changed) {
             anyChange = true;
         }
         if (changed && oldVal !== undefined) {
-            text = `${ oldVal }->${ newVal }`;
+            const up = key === 'position' ? '↓' : '↑';
+            const down = key === 'position' ? '↑' : '↓';
+            text = `${ SHOW_OLD_COMPARISON_VALUES ? oldVal : '' }${
+                newVal > oldVal ? up : oldVal > newVal ? down : ''
+            }${ newVal }`;
         }
-        return `${ relavantProp.prefix || '' }${ text }${ relavantProp.postfix || '' }`;
+        return `${ relevantProp.prefix || '' }${ text }${ relevantProp.postfix || '' }`;
     });
-    lineElements.push(getNewStarTimesString(member, oldMember));
+    lineElements.push(getStarTimesString(member, oldMember));
     return { anyChange, lineElements };
 }
 
@@ -74,7 +90,7 @@ function createTableLikeString(changedLineElementsList) {
         return lineElems.map((elem, i) => {
             const others = changedLineElementsList.map(lineElems => lineElems[i]);
             const maxLen = Math.max(...others.map(el => el.length));
-            return elem.padStart(maxLen)
+            return ('' + elem.padStart(maxLen, '\u00A0')).replace(/\s/g, '\u00A0')
         }).join('');
     }).join('\n');
     if (changedLineElementsList.length > MAX_MEMBERS_IN_MESSAGE) {
@@ -96,11 +112,13 @@ function createMemberLines(leaderboardJson, oldLeaderboardJson) {
 function createMemberSummary(newMember, oldMember) {
     const addedStars = getNewStarTimes(newMember, oldMember)
     const splitName = ('' + newMember.name || 'Mister Nameless').split(' ');
-    const shortName = splitName[0].substr(0, 10) + (splitName[1] && (' ' + splitName[1][0]) || '');
+    const firstName = splitName[0].substr(0, FIRST_NAME_IN_SUMMARY_CUTOFF);
+    const restName = splitName.slice(1).join(' ').substr(0, REST_NAME_IN_SUMMARY_CUTOFF)
+    const shortName = [ firstName, restName ].join(' ');
     if (!(oldMember.position <= newMember.position)) {
-        return `**${ shortName }** rose to position **${ newMember.position }**`
+        return `**${ shortName }**: ↑**${ newMember.position }**`
     } else if (addedStars.length) {
-        return `**${ shortName }** gained **${ addedStars.length }** *`
+        return `**${ shortName }**: +**${ addedStars.length }**★`
     }
     return '';
 }
