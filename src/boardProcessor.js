@@ -16,6 +16,9 @@ function getNewStarTimes(member, oldMember) {
 
 function getNewStarTimesString(member, oldMember) {
     const changedStars = getNewStarTimes(member, oldMember);
+    if (changedStars.length > 2) {
+        changedStars.splice(0, changedStars.length - 2)
+    }
     const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
     return `${ changedStars.map(ts => hourMinutes(new Date(ts * 1000))) }`;
 }
