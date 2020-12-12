@@ -18,12 +18,6 @@ No fancy integrations, just using Discord client for posting the messages.
 # Try it out in your Browser now!
 I uploaded this project to repl.it and verified it is working fine there from the browser. You can run it directly by going here: [https://repl.it/@francisduvivier/aoc-jslb](https://repl.it/@francisduvivier/aoc-jslb). You need to fork it there and create a .env file in order to pass the config data (required environment variable names and values are exactly the same as the `config.json` file. You should know though that your leaderboard will be stored in a file which is as public as your replit fork. Check `getNewLeaderBoard` in `src/aocFetch.js` to change this.
 
-# Stuff coming soon
-
-- Nicer looking messages
-- More change processing to highlight what's changed
-- Maybe better run control
-
 # License
 
 You can do whatever with this code, but don't sue me.
