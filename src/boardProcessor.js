@@ -82,7 +82,7 @@ function createTableLikeString(changedLineElementsList) {
         return lineElems.map((elem, i) => {
             const others = changedLineElementsList.map(lineElems => lineElems[i]);
             const maxLen = Math.max(...others.map(el => el.length));
-            return elem.padStart(maxLen)
+            return elem.padStart(maxLen, '\u00A0').replaceAll(/\s/g, '\u00A0')
         }).join('');
     }).join('\n');
     if (changedLineElementsList.length > MAX_MEMBERS_IN_MESSAGE) {
