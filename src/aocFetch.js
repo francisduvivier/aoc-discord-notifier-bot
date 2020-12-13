@@ -1,26 +1,31 @@
 const { readFileSync, writeFileSync } = require('fs');
 const fetch = require('node-fetch');
+const { getDummyBoard } = require("./test/dummyBoard");
+const {
+    KEEP_ALL_LEADERBOARDS,
+    DUMMY_BOARD,
+    DONT_USE_PERMANENT_STORAGE
+} = require("./configHelper");
 const { config } = require('./configHelper');
-
-const DUMMY_BOARD = process.env.DUMMY_BOARD === 'true';
-const KEEP_ALL_LEADERBOARDS = process.env.KEEP_ALL_LEADERBOARDS === 'true';
 
 const boardUrl = config.leaderboardUrl;
 const jsonBoardUrl = boardUrl + '.json';
 
+let lastLeaderBoard = '{}';
+
 function getLastLeaderBoard() {
     try {
-        return readFileSync('./data/aocleaderboard.json', { encoding: 'utf8' })
+        if (DONT_USE_PERMANENT_STORAGE || DUMMY_BOARD) {
+            return lastLeaderBoard;
+        } else {
+            return readFileSync('./data/aocleaderboard.json', { encoding: 'utf8' })
+        }
     } catch {
         return '{}';
     }
 }
 
 async function fetchLeaderBoard() {
-    if (DUMMY_BOARD) {
-        console.log(`Reading from file [./data/newleaderboard.json] instead of fetching from [${ boardUrl }.json]`)
-        return readFileSync('./data/newleaderboard.json', { encoding: 'utf8' });
-    }
     console.log(`Requesting leaderboard from [${ boardUrl }]`)
     const requestInit = {
         headers: {
@@ -34,13 +39,15 @@ async function fetchLeaderBoard() {
 }
 
 async function getNewLeaderBoard() {
-    const newLeaderBoardJson = await fetchLeaderBoard();
+    const newLeaderBoardJson = DUMMY_BOARD ? getDummyBoard() : await fetchLeaderBoard();
     if (newLeaderBoardJson.startsWith('{') && JSON.parse(newLeaderBoardJson).members) {
-        if (KEEP_ALL_LEADERBOARDS && !DUMMY_BOARD) {
-            writeFileSync(`./data/old/aocleaderboard-${ Date.now() }.json`, getLastLeaderBoard());
-        }
-        if(!DUMMY_BOARD){
-        writeFileSync('./data/aocleaderboard.json', newLeaderBoardJson);
+        if (DONT_USE_PERMANENT_STORAGE || DUMMY_BOARD) {
+            lastLeaderBoard = newLeaderBoardJson;
+        } else {
+            if (KEEP_ALL_LEADERBOARDS) {
+                writeFileSync(`./data/old/aocleaderboard-${ Date.now() }.json`, getLastLeaderBoard());
+            }
+            writeFileSync('./data/aocleaderboard.json', newLeaderBoardJson);
         }
     } else {
         throw Error('Bad leaderboard response:' + newLeaderBoardJson);
@@ -50,7 +57,6 @@ async function getNewLeaderBoard() {
 
 module.exports = {
     boardUrl,
-    jsonBoardUrl,
     getLastLeaderBoard,
     getNewLeaderBoard,
 }

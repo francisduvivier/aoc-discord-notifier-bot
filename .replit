@@ -1,0 +1,2 @@
+language = "nodejs"
+run = "export DONT_USE_PERMANENT_STORAGE=true; node src/index.js"
