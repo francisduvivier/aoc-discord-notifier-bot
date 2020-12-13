@@ -27,7 +27,7 @@ No fancy integrations, just using Discord client for posting the messages.
 # Try it out in your Browser now!
 
 I uploaded this project to [repl.it](https://repl.it/) and verified it is working fine there from the browser. You can
-run it directly by going here: [https://repl.it/github/francisduvivier/aoc-discord-notifier-bot](https://repl.it/github/francisduvivier/aoc-discord-notifier-bot).
+run it directly by going here: [https://repl.it/@francisduvivier/aoc-discord-notifier-bot](https://repl.it/@francisduvivier/aoc-discord-notifier-bot).
 You need to fork it there and create a .env file in order to pass the config data (required environment variable names
 and values are exactly the same as the [config.json](./config.json) file). You should know though that saving leaderboard
 files to disk is disabled on [repl.it](https://repl.it/) by default. So every time the program is restarted, the whole
