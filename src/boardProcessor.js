@@ -10,7 +10,6 @@ function getNewStarTimes(member, oldMember) {
     const newMemberStarTimes = getAllStarTimes(member);
     const oldMemberStarTimes = getAllStarTimes(oldMember);
     const newStarTimes = newMemberStarTimes.filter(starTime => oldMemberStarTimes.indexOf(starTime) === -1)
-    newStarTimes.sort((a, b) => a - b)
     return newStarTimes;
 }
 
@@ -24,9 +23,10 @@ function getAllStarTimes(member) {
         const dayObj = member.completion_day_level[dayIndex];
         const levelIds = Object.getOwnPropertyNames(dayObj);
         for (const levelId of levelIds) {
-            stars.push(dayObj[levelId].get_star_ts);
+            stars.push(Number(dayObj[levelId].get_star_ts));
         }
     }
+    stars.sort((a, b) => a - b)
     return stars;
 }
 
