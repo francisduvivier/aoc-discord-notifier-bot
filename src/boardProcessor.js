@@ -15,6 +15,9 @@ function getNewStarTimes(member, oldMember) {
 }
 
 function getAllStarTimes(member) {
+    if (!member.completion_day_level) {
+        return [];
+    }
     const dayIds = Object.getOwnPropertyNames(member.completion_day_level);
     const stars = [];
     for (const dayIndex of dayIds) {
