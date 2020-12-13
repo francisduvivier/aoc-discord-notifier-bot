@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "npm run start"
+run = "export DONT_USE_PERMANENT_STORAGE=true; node src/index.js"
