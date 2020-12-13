@@ -1,6 +1,6 @@
 {
   "name": "oac-discord-notifier",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Advent of Code 2020 Private Leaderboard Change Notifier for Discord",
   "main": "src/index.js",
   "scripts": {
