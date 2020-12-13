@@ -23,6 +23,9 @@ No fancy integrations, just using Discord client for posting the messages.
 - Run `npm run start`
 - Kill the process if you wanna stop the bot
 
+ #### Miscellaneous
+ If you do not wish to have the private leaderboard JSON data exposed to public, even with a public REPL, just add `onBoot="rm -f data/*.json"` in the `.replit` file.
+
 # Try it out in your Browser now!
 
 I uploaded this project to repl.it and verified it is working fine there from the browser. You can run it directly by
