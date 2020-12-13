@@ -24,16 +24,18 @@ No fancy integrations, just using Discord client for posting the messages.
 - Run `npm run start`
 - Kill the process if you wanna stop the bot
 
- #### Miscellaneous
- If you do not wish to have the private leaderboard JSON data exposed to public, even with a public REPL, just add `onBoot="rm -f data/*.json"` in the `.replit` file.
-
 # Try it out in your Browser now!
 
-I uploaded this project to [repl.it](https://repl.it/) and verified it is working fine there from the browser. You can run it directly by
-going here: [https://repl.it/@francisduvivier/aoc-jslb](https://repl.it/@francisduvivier/aoc-jslb). You need to fork it
-there and create a .env file in order to pass the config data (required environment variable names and values are
-exactly the same as the [config.json](config.json) file). You should know though that saving leaderboard files to disk
-is disabled on [repl.it](https://repl.it/) by default. So every time the program is restarted, the whole leaderboard will be seen as new in the first check.
+I uploaded this project to [repl.it](https://repl.it/) and verified it is working fine there from the browser. You can
+run it directly by going here: [https://repl.it/@francisduvivier/aoc-jslb](https://repl.it/@francisduvivier/aoc-jslb).
+You need to fork it there and create a .env file in order to pass the config data (required environment variable names
+and values are exactly the same as the [config.json](config.json) file). You should know though that saving leaderboard
+files to disk is disabled on [repl.it](https://repl.it/) by default. So every time the program is restarted, the whole
+leaderboard will be seen as new in the first check.
+
+### Miscellaneous
+
+You can also update the replit file to delete the files on every boot.For that add `onBoot="rm -f data/*.json"` in the `.replit` file.
 
 # License
 
