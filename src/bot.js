@@ -1,14 +1,15 @@
+const { DUMMY_BOARD } = require("./configHelper");
 const { createSummary } = require("./boardProcessor");
 const { createMemberLines } = require("./boardProcessor");
 const { boardUrl, getLastLeaderBoard, getNewLeaderBoard } = require('./aocFetch');
 const { sendMessage } = require('./discordNotifier');
 
-const POLLING_INTERVAL = 15 * 60 * 1000;
+const POLLING_INTERVAL = DUMMY_BOARD ? 10 * 1000 : 15 * 60 * 1000;
 
 async function runBot() {
     console.log('Bot Started!')
     const oldLeaderBoardJson = getLastLeaderBoard();
-    console.log('Leaderboard from last run:', '\n' + createMemberLines(oldLeaderBoardJson, '{}'));
+    console.log('Leaderboard from last run:', '\n' + (createMemberLines(oldLeaderBoardJson, '{}') || 'EMPTY'));
     await postToDiscordIfChanged();
     setInterval(postToDiscordIfChanged, POLLING_INTERVAL);
 }

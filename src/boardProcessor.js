@@ -40,10 +40,10 @@ function getStarTimesString(member, oldMember) {
 }
 
 const relevantProps = [
-    { prefix: '', key: 'position', postfix: '|', lowIsUp: true },
-    { prefix: '', key: 'name', postfix: '|' },
-    { prefix: '', key: 'local_score', postfix: 'p|' },
-    { prefix: '', key: 'stars', postfix: '★|' },
+    { prefix: '', key: 'position', postfix: '|', lowIsUp: true, default: 0 },
+    { prefix: '', key: 'name', postfix: '|', default: 'null' },
+    { prefix: '', key: 'local_score', postfix: 'p|', default: 0 },
+    { prefix: '', key: 'stars', postfix: '★|', default: 0 },
 ]
 
 /**
@@ -62,15 +62,15 @@ function createMemberlineElements(member, oldMember) {
         const oldVal = oldMember[key];
         const newVal = member[key];
         const changed = oldVal !== newVal;
-        let text = String(newVal).substr(0, NAME_IN_MESSAGE_CUTOFF);
+        let text = String(newVal || relevantProp.default).substr(0, NAME_IN_MESSAGE_CUTOFF);
         if (changed) {
             anyChange = true;
         }
         if (changed && oldVal !== undefined) {
-            const up = key === 'position' ? '↓' : '↑';
-            const down = key === 'position' ? '↑' : '↓';
+            const biggerNumberIcon = key === 'position' ? '↓' : '↑';
+            const lowerNumberIcon = key === 'position' ? '↑' : '↓';
             text = `${ SHOW_OLD_COMPARISON_VALUES ? oldVal : '' }${
-                newVal > oldVal ? up : oldVal > newVal ? down : ''
+                newVal > oldVal ? biggerNumberIcon : oldVal > newVal ? lowerNumberIcon : ''
             }${ newVal }`;
         }
         return `${ relevantProp.prefix || '' }${ text }${ relevantProp.postfix || '' }`;
