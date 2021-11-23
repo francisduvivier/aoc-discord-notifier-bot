@@ -1,4 +1,4 @@
-# Advent of Code 2020 Leaderboard Discord Bot
+# Advent of Code 2021 Leaderboard Discord Bot
 
 This is a simple Discord bot written in JavaScript for Node.js that posts to a Discord channel when the stars or the
 score on a private leaderboard have changed. The [bot](src/bot.js) will call
