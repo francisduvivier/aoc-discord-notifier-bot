@@ -35,8 +35,8 @@ function getStarTimesString(member, oldMember) {
     if (starTimes.length > MAX_STAR_TIMES_SHOWN) {
         starTimes.splice(0, starTimes.length - MAX_STAR_TIMES_SHOWN)
     }
-    const hourMinutes = (date) => `${ String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') }`
-    return `${ starTimes.map(ts => hourMinutes(new Date(ts * 1000))) }`;
+    const hourMinutes = (date) => `${String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0')}`
+    return `${starTimes.map(ts => hourMinutes(new Date(ts * 1000)))}`;
 }
 
 const relevantProps = [
@@ -69,11 +69,10 @@ function createMemberlineElements(member, oldMember) {
         if (changed && oldVal !== undefined) {
             const biggerNumberIcon = key === 'position' ? '↓' : '↑';
             const lowerNumberIcon = key === 'position' ? '↑' : '↓';
-            text = `${ SHOW_OLD_COMPARISON_VALUES ? oldVal : '' }${
-                newVal > oldVal ? biggerNumberIcon : oldVal > newVal ? lowerNumberIcon : ''
-            }${ newVal }`;
+            text = `${SHOW_OLD_COMPARISON_VALUES ? oldVal : ''}${newVal > oldVal ? biggerNumberIcon : oldVal > newVal ? lowerNumberIcon : ''
+                }${newVal}`;
         }
-        return `${ relevantProp.prefix || '' }${ text }${ relevantProp.postfix || '' }`;
+        return `${relevantProp.prefix || ''}${text}${relevantProp.postfix || ''}`;
     });
     lineElements.push(getStarTimesString(member, oldMember));
     return { anyChange, lineElements };
@@ -97,7 +96,7 @@ function createTableLikeString(changedLineElementsList) {
         }).join('');
     }).join('\n');
     if (changedLineElementsList.length > MAX_MEMBERS_IN_MESSAGE) {
-        tableLikeString += `\nAnd ${ changedLineElementsList.length - MAX_MEMBERS_IN_MESSAGE } more changes!`
+        tableLikeString += `\nAnd ${changedLineElementsList.length - MAX_MEMBERS_IN_MESSAGE} more changes!`
     }
     return tableLikeString;
 }
@@ -117,11 +116,11 @@ function createMemberSummary(newMember, oldMember) {
     const splitName = ('' + newMember.name || 'Mister Nameless').split(' ');
     const firstName = splitName[0].substr(0, FIRST_NAME_IN_SUMMARY_CUTOFF);
     const restName = splitName.slice(1).join(' ').substr(0, REST_NAME_IN_SUMMARY_CUTOFF)
-    const shortName = [ firstName, restName ].join(' ');
-    if (!(oldMember.position <= newMember.position)) {
-        return `**${ shortName }**: ↑**${ newMember.position }**`
-    } else if (addedStars.length) {
-        return `**${ shortName }**: +**${ addedStars.length }**★`
+    const shortName = [firstName, restName].join(' ');
+    if (addedStars.length) {
+        return `**${shortName} +${addedStars.length}***`
+    } else if (!(oldMember.position <= newMember.position)) {
+        return `**${shortName} ^${newMember.position}**`
     }
     return '';
 }
@@ -136,7 +135,7 @@ function createSummary(leaderboardJson, oldLeaderboardJson) {
     const improvedMembers = memberSummaries.filter(summary => summary);
     if (improvedMembers.length > 3) {
         const removedMembers = improvedMembers.splice(3);
-        return `${ improvedMembers.join(', ') } and ${ removedMembers.length } more updates`
+        return `${improvedMembers.join(', ')} and ${removedMembers.length} more updates`
     } else {
         return improvedMembers.join(', ')
     }
