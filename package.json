@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "node src/test/testConfig.js"
+    "test": "jasmine src/test/unit-test/testConfig.js"
   },
   "author": "Francis Duvivier",
   "license": "MIT",
@@ -15,7 +15,9 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "@types/jasmine": "^3.10.2",
     "@types/node": "^14.14.10",
-    "@types/node-fetch": "^2.5.7"
+    "@types/node-fetch": "^2.5.7",
+    "jasmine": "^3.10.0"
   }
 }

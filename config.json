@@ -1,5 +1,5 @@
 {
-  "webhookUrl": "your bot's webhook id, https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks (second last path part of webhook url)",
+  "webhookUrl": "your bot's webhook url, as provided by discord eg. https://discord.com/api/webhooks/someHookID6/some_Hook-Token9",
   "aocCookie": "session=your_session_id (get this from cookie for private leaderboard request when logged in, should stay valid for a month)",
-  "leaderboardUrl": "eg https://adventofcode.com/2020/leaderboard/private/view/your_id (without .json, we'll append that in the code)"
+  "leaderboardUrl": "eg. https://adventofcode.com/2020/leaderboard/private/view/your_id (without .json, we'll append that in the code)"
 }
