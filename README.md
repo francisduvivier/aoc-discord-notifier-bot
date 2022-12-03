@@ -1,4 +1,4 @@
-# Advent of Code 2021 Leaderboard Discord Bot
+# :star2::star2::star2: Private Leaderboard Discord Bot for Advent of Code :star2::star2::star2: (Runs on Raspberry Pi Zero)
 
 This is a simple Discord bot written in JavaScript for Node.js that posts to a Discord channel when the stars or the
 score on a private leaderboard have changed. The [bot](src/bot.js) will call
@@ -39,4 +39,4 @@ You can also update the [.replit](./replit) file to delete the files on every bo
 
 # License
 
-You can do whatever with this code, but don't sue me.
+MIT License, You can do whatever with this code, but don't sue me.
