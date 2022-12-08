@@ -4,8 +4,8 @@
   "description": "Advent of Code 2020 Private Leaderboard Change Notifier for Discord",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "jasmine src/test/unit-test/testConfig.js"
   },
   "author": "Francis Duvivier",
   "license": "MIT",
@@ -15,7 +15,9 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "@types/jasmine": "^3.10.2",
     "@types/node": "^14.14.10",
-    "@types/node-fetch": "^2.5.7"
+    "@types/node-fetch": "^2.5.7",
+    "jasmine": "^3.10.0"
   }
 }

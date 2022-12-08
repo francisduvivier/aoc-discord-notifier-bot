@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const { config } = require('./configHelper');
 
 const webhookClient = new Discord.WebhookClient(config.webhookID, config.webhookToken);
-
 async function sendMessage(title, message, postFix) {
     console.log('Sending to Discord', title, '\n' + message);
     let message_with_cuttoff = message;

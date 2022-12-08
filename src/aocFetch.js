@@ -26,7 +26,7 @@ function getLastLeaderBoard() {
 }
 
 async function fetchLeaderBoard() {
-    console.log(`Requesting leaderboard from [${ boardUrl }]`)
+    console.log(`Requesting leaderboard from [${boardUrl}]`)
     const requestInit = {
         headers: {
             'Cookie': config.aocCookie
@@ -45,7 +45,7 @@ async function getNewLeaderBoard() {
             lastLeaderBoard = newLeaderBoardJson;
         } else {
             if (KEEP_ALL_LEADERBOARDS) {
-                writeFileSync(`./data/old/aocleaderboard-${ Date.now() }.json`, getLastLeaderBoard());
+                writeFileSync(`./data/old/aocleaderboard-${Date.now()}.json`, getLastLeaderBoard());
             }
             writeFileSync('./data/aocleaderboard.json', newLeaderBoardJson);
         }
