@@ -118,9 +118,9 @@ function createMemberSummary(newMember, oldMember) {
     const restName = splitName.slice(1).join(' ').substr(0, REST_NAME_IN_SUMMARY_CUTOFF)
     const shortName = [firstName, restName].join(' ');
     if (addedStars.length) {
-        return `**${shortName} +${addedStars.length}***`
+        return `${shortName} +${addedStars.length}★`
     } else if (!(oldMember.position <= newMember.position)) {
-        return `**${shortName} ^${newMember.position}**`
+        return `${shortName} ^${newMember.position}`
     }
     return '';
 }
