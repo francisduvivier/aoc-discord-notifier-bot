@@ -33,23 +33,10 @@ function createTable(message) {
 
 function createAdaptiveCard(title, message) {
     return {
-        'type': 'AdaptiveCard',
-        'text': 'AOC Update!:' + title,
-        'body': [
-            {
-                'type': 'FactSet',
-                'facts': createTable(message)
-            }
-        ],
+        'type': 'Message',
+        'text': 'AOC Update!:' + title + '\n' + message,
         '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-        'version': '1.0',
-        'actions': [
-            {
-                'type': 'Action.OpenUrl',
-                'title': 'Open LeaderBoard',
-                'url': config.leaderboardUrl
-            }
-        ]
+        'version': '1.0'
     };
 }
 
