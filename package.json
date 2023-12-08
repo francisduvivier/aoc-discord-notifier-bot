@@ -10,7 +10,7 @@
   "author": "Francis Duvivier",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "~11.6.4",
+    "discord.js": "^14.14.1",
     "dotenv": "^8.2.0",
     "node-fetch": "^2.6.1"
   },

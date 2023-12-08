@@ -1,7 +1,8 @@
 const configFromJson = require('../config.json');
 
 require('dotenv').config();
-const configKeys = [ 'webhookID', 'webhookToken', 'aocCookie', 'leaderboardUrl' ];
+/** @type {BotConfigKey[]} */
+const configKeys = [ 'webhookUrl', 'webhookType', 'aocCookie', 'leaderboardUrl' ];
 
 const config = createConfig();
 
@@ -10,12 +11,7 @@ const DONT_USE_PERMANENT_STORAGE = process.env.DONT_USE_PERMANENT_STORAGE === 't
 const KEEP_ALL_LEADERBOARDS = process.env.KEEP_ALL_LEADERBOARDS === 'true';
 
 /**
- * @return {{
- *     'webhookID': string,
- *     'webhookToken': string,
- *     'aocCookie': string,
- *     'leaderboardUrl': string
- * }}
+ * @return {BotConfig}
  */
 function createConfig() {
     const config = {};
