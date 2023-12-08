@@ -23,9 +23,10 @@ function createCells(line) {
 function createTable(message) {
     const lines = message.split('\n');
     return lines.map(line => {
+        let cells = line.split('|');
         return {
-            'type': 'TableRow',
-            'cells': createCells(line)
+            'title': cells[ 0 ],
+            'value': cells.slice(1).join('|')
         };
     });
 }
@@ -36,35 +37,12 @@ function createAdaptiveCard(title, message) {
         'text': 'AOC Update!:' + title,
         'body': [
             {
-                'type': 'TextBlock',
-                'size': 'Medium',
-                'weight': 'Bolder',
-                'text': 'Changes: ' + title
-            },
-            {
-                'type': 'Table',
-                'columns': [
-                    {
-                        'width': 1
-                    },
-                    {
-                        'width': 5
-                    },
-                    {
-                        'width': 2
-                    },
-                    {
-                        'width': 2
-                    },
-                    {
-                        'width': 4
-                    }
-                ],
-                'rows': createTable(message)
+                'type': 'FactSet',
+                'facts': createTable(message)
             }
         ],
         '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-        'version': '1.6',
+        'version': '1.0',
         'actions': [
             {
                 'type': 'Action.OpenUrl',
