@@ -74,13 +74,12 @@ function createAdaptiveCard(title, message) {
 }
 
 async function sendMessage(title, message, postFix) {
-    console.log('Sending to Discord', title, '\n' + message);
+    console.log('Sending to Teams', title, '\n' + message);
     const adaptiveCard = createAdaptiveCard(title, message);
-    if (process.env.DUMMY_BOARD === 'true') {
-        console.log('CARD TO BE SENT', JSON.stringify(adaptiveCard));
-        return;
+    console.log('CARD TO BE SENT to TEAS', JSON.stringify(adaptiveCard));
+    if (process.env.DUMMY_BOARD !== 'true') {
+        await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
     }
-    await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
 }
 
 module.exports = { sendMessage, createAdaptiveCard, createCells };
