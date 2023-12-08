@@ -78,7 +78,8 @@ async function sendMessage(title, message, postFix) {
     const adaptiveCard = createAdaptiveCard(title, message);
     console.log('CARD TO BE SENT to TEAS', JSON.stringify(adaptiveCard));
     if (process.env.DUMMY_BOARD !== 'true') {
-        await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
+        const result = await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
+        console.log('Fetch response', JSON.stringify(result));
     }
 }
 
