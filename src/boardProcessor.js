@@ -63,7 +63,7 @@ function createMemberlineElements(member, oldMember) {
         const newVal = member[ key ];
         const changed = oldVal !== newVal;
         let text = String(newVal || relevantProp.default).substr(0, NAME_IN_MESSAGE_CUTOFF);
-        if (changed) {
+        if (changed && (oldVal === undefined || member.stars)) {
             anyChange = true;
         }
         if (changed && oldVal !== undefined) {
