@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const { config } = require('./configHelper');
 
-const webhookClient = new Discord.WebhookClient({ url: config.webhookUrl });
 
 async function sendMessage(title, message, postFix) {
+    const webhookClient = new Discord.WebhookClient({ url: config.webhookUrl });
     console.log('Sending to Discord', title, '\n' + message);
     let message_with_cuttoff = message;
     let DISCORD_CHAR_LIMIT = 2000;
