@@ -67,7 +67,7 @@ function createAdaptiveCard(title, message) {
             {
                 'type': 'Action.OpenUrl',
                 'title': 'Open LeaderBoard',
-                'url': 'leaderbaordurl'
+                'url': config.leaderboardUrl
             }
         ]
     };
@@ -76,7 +76,7 @@ function createAdaptiveCard(title, message) {
 async function sendMessage(title, message, postFix) {
     console.log('Sending to Teams', title, '\n' + message);
     const adaptiveCard = createAdaptiveCard(title, message);
-    console.log('CARD TO BE SENT to TEAS', JSON.stringify(adaptiveCard));
+    console.log('CARD TO BE SENT to TEAMS', JSON.stringify(adaptiveCard));
     if (process.env.DUMMY_BOARD !== 'true') {
         const result = await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
         console.log('Fetch response', JSON.stringify(result));
