@@ -2,7 +2,7 @@ const { DUMMY_BOARD } = require('./configHelper');
 const { createSummary } = require('./boardProcessor');
 const { createMemberLines } = require('./boardProcessor');
 const { boardUrl, getLastLeaderBoard, getNewLeaderBoard } = require('./aocFetch');
-const { sendMessage } = require('./discordNotifier');
+const { sendMessage } = require('./messager');
 
 const POLLING_INTERVAL = DUMMY_BOARD ? 10 * 1000 : 15 * 60 * 1000;
 

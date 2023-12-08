@@ -1,6 +1,6 @@
 type BotConfig = {
     'webhookUrl': string,
-    'webhookType': string,
+    'webhookType': 'DISCORD'|'MSTEAMS',
     'aocCookie': string,
     'leaderboardUrl': string,
 }
