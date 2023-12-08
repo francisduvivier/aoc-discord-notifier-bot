@@ -51,7 +51,7 @@ function getBoard2() {
                 'id': '212345'
             },
             '312345': {
-                'name': null,
+                'name': 'Joske',
                 'id': '312345'
             },
         }, 'event': '2020'
