@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { config } = require('./configHelper');
 const fetch = require('node-fetch');
+const { inspect } = require('util');
 
 function createCell(text) {
     return {
@@ -79,7 +80,7 @@ async function sendMessage(title, message, postFix) {
     console.log('CARD TO BE SENT to TEAMS', JSON.stringify(adaptiveCard));
     if (process.env.DUMMY_BOARD !== 'true') {
         const result = await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
-        console.log('Fetch response', JSON.stringify(result));
+        console.log('Fetch response', inspect(result, { depth: -1, showHidden: true }));
     }
 }
 
