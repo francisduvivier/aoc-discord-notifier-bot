@@ -1,8 +1,8 @@
 type BotConfig = {
     'webhookUrl': string,
+    'webhookType': string,
     'aocCookie': string,
     'leaderboardUrl': string,
-    'webhookType': string,
 }
 
 type BotConfigKey = keyof BotConfig;

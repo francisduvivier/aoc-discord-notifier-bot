@@ -1,4 +1,15 @@
-const configFromJson = require('../config.json');
+/**
+ * @returns {BotConfig}
+ */
+function getConfigFromJson() {
+    try {
+        return require('../config.local.json');
+    } catch (e) {
+        return require('../config.json');
+    }
+}
+
+const configFromJson = getConfigFromJson();
 
 require('dotenv').config();
 /** @type {BotConfigKey[]} */
