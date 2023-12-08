@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const { config } = require('./configHelper');
+const fetch = require('node-fetch');
 
 function createCell(text) {
     return {
