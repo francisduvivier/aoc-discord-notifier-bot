@@ -78,8 +78,14 @@ async function sendMessage(title, message, postFix) {
     console.log('Sending to Teams', title, '\n' + message);
     const adaptiveCard = createAdaptiveCard(title, message);
     console.log('CARD TO BE SENT to TEAMS', JSON.stringify(adaptiveCard));
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(adaptiveCard),
+        redirect: 'follow'
+    };
     if (process.env.DUMMY_BOARD !== 'true') {
-        const result = await fetch(config.webhookUrl, { method: 'POST', body: JSON.stringify(adaptiveCard) });
+        const result = await fetch(config.webhookUrl, requestOptions);
         console.log('Fetch response', inspect(result, { depth: -1, showHidden: true }));
     }
 }
