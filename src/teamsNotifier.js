@@ -33,6 +33,7 @@ function createTable(message) {
 function createAdaptiveCard(title, message) {
     return {
         'type': 'AdaptiveCard',
+        'text': 'AOC Update!:' + title,
         'body': [
             {
                 'type': 'TextBlock',
@@ -86,7 +87,10 @@ async function sendMessage(title, message, postFix) {
     };
     if (process.env.DUMMY_BOARD !== 'true') {
         const result = await fetch(config.webhookUrl, requestOptions);
-        console.log('Fetch response', inspect(result, { depth: -1, showHidden: true }));
+        console.log('Fetch response status', result.status);
+        console.log('Fetch response status', result.statusText);
+        const responseText = await result.text();
+        console.log('Fetch response text', responseText);
     }
 }
 
