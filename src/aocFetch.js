@@ -1,11 +1,11 @@
 const { readFileSync, writeFileSync } = require('fs');
 const fetch = require('node-fetch');
-const { getDummyBoard } = require("./test/dummyBoard");
+const { getDummyBoard } = require('./test/dummyBoard');
 const {
     KEEP_ALL_LEADERBOARDS,
     DUMMY_BOARD,
     DONT_USE_PERMANENT_STORAGE
-} = require("./configHelper");
+} = require('./configHelper');
 const { config } = require('./configHelper');
 
 const boardUrl = config.leaderboardUrl;
@@ -18,7 +18,7 @@ function getLastLeaderBoard() {
         if (DONT_USE_PERMANENT_STORAGE || DUMMY_BOARD) {
             return lastLeaderBoard;
         } else {
-            return readFileSync('./data/aocleaderboard.json', { encoding: 'utf8' })
+            return readFileSync('./data/aocleaderboard.json', { encoding: 'utf8' });
         }
     } catch {
         return '{}';
@@ -26,7 +26,7 @@ function getLastLeaderBoard() {
 }
 
 async function fetchLeaderBoard() {
-    console.log(`Requesting leaderboard from [${ boardUrl }]`)
+    console.log(`Requesting leaderboard from [${boardUrl}]`);
     const requestInit = {
         headers: {
             'Cookie': config.aocCookie
@@ -45,7 +45,7 @@ async function getNewLeaderBoard() {
             lastLeaderBoard = newLeaderBoardJson;
         } else {
             if (KEEP_ALL_LEADERBOARDS) {
-                writeFileSync(`./data/old/aocleaderboard-${ Date.now() }.json`, getLastLeaderBoard());
+                writeFileSync(`./data/old/aocleaderboard-${Date.now()}.json`, getLastLeaderBoard());
             }
             writeFileSync('./data/aocleaderboard.json', newLeaderBoardJson);
         }
@@ -59,4 +59,4 @@ module.exports = {
     boardUrl,
     getLastLeaderBoard,
     getNewLeaderBoard,
-}
+};

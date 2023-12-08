@@ -1,2 +1,2 @@
-const { runBot } = require("./bot");
+const { runBot } = require('./bot');
 runBot();
