@@ -20,13 +20,14 @@ function createCells(line) {
     return line.split('|').map(createCell);
 }
 
-function createTable(message) {
+function createTextBlocks(message) {
     const lines = message.split('\n');
     return lines.map(line => {
         let cells = line.split('|');
         return {
-            'title': cells[ 0 ],
-            'value': cells.slice(1).join('|')
+            'type': 'TextBlock',
+            'text': line,
+            'spacing': 'Medium',
         };
     });
 }
@@ -37,12 +38,7 @@ function createAdaptiveCard(title, message) {
         'type': 'AdaptiveCard',
         'version': '1.0',
         'text': '★AOC Update★:' + title,
-        'body': [
-            {
-                'type': 'FactSet',
-                'facts': createTable(message.replaceAll('★', '*'))
-            }
-        ],
+        'body': createTextBlocks(message),
     };
 }
 
